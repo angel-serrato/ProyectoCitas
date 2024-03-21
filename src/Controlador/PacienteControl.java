@@ -30,7 +30,7 @@ public class PacienteControl implements ActionListener {
             if (pacienteVista.rdb_femenino.isSelected()) {
                 genero = "F";
             }
-            pacienteModelo = new Modelo.Paciente(identificacion, nombres, apellidos, fechaNacimiento);
+            pacienteModelo = new Modelo.Paciente(identificacion, nombres, apellidos, fechaNacimiento, genero);
             gestorpacienteModelo.RegistrarPacientes(pacienteModelo);
         }
         if (e.getSource().equals(pacienteVista.btn_nuevo)) {

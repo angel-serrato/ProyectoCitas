@@ -6,8 +6,9 @@ public class Paciente {
     private String nombres;
     private String apellidos;
     private String fechaNacimiento;
+    private String genero;
 
-    public Paciente(String identificacion, String nombres, String apellidos, String fechaNacimiento) {
+    public Paciente(String identificacion, String nombres, String apellidos, String fechaNacimiento, String genero) {
         this.identificacion = identificacion;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -36,6 +37,14 @@ public class Paciente {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+    
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
     public String getFechaNacimiento() {

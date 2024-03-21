@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.text.SimpleDateFormat;
 
 public class GestorPaciente {
 
@@ -12,10 +13,27 @@ public class GestorPaciente {
     private static Connection conn;
 
     public GestorPaciente() {
-        Recursos.Conexion conexion = new Recursos.Conexion("localhost", "XE", "SYSTEM", "123");
+        Recursos.Conexion conexion = new Recursos.Conexion();
         conn = conexion.getConexion();
-        //pacientes=new LinkedList<Paciente>();
+        pacientes = new LinkedList<Paciente>();
     }
+
+//    public void RegistrarPacientes(Paciente paciente) {
+//        PreparedStatement pst;
+//        try {
+//            pst = conn.prepareStatement("insert into PACIENTE values(?,?,?,?,?)");
+//            pst.setString(1, paciente.getIdentificacion());
+//            pst.setString(2, paciente.getNombres());
+//            pst.setString(3, paciente.getApellidos());
+//            pst.setString(4, paciente.getFechaNacimiento());
+//            pst.setString(5, paciente.getGenero());
+//            pst.executeUpdate();
+//            JOptionPane.showMessageDialog(null, "Paciente Registrado");
+//        } catch (SQLException ex) {
+//            Logger.getLogger(GestorPaciente.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        pacientes.add(paciente);
+//    }
 
     public void RegistrarPacientes(Paciente paciente) {
         PreparedStatement pst;
@@ -24,14 +42,18 @@ public class GestorPaciente {
             pst.setString(1, paciente.getIdentificacion());
             pst.setString(2, paciente.getNombres());
             pst.setString(3, paciente.getApellidos());
-            pst.setString(4, paciente.getFechaNacimiento());
+
+            // Formatear la fecha en el formato correcto (YYYY-MM-DD HH:MM:SS)
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = dateFormat.format(paciente.getFechaNacimiento());
+
+            pst.setString(4, formattedDate);
             pst.setString(5, paciente.getGenero());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Paciente Registrado");
         } catch (SQLException ex) {
             Logger.getLogger(GestorPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //pacientes.add(paciente);
     }
 
     public LinkedList<Paciente> getPacientebyParametro(int parametro, String valor) {
@@ -62,11 +84,11 @@ public class GestorPaciente {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                resultado.add(new Paciente(rs.getString("PACIDENTIFICACION"), rs.getString("PACNOMBRES") , rs.getString("PACAPELLIDOS") , rs.getString("PACFECHANACIMIENTO"))
-                        // ,rs.getString("PACGENERO") esto se puede agregar a la linea 65
-            );
-        }
-        st.close();
+                resultado.add(new Paciente(rs.getString("PACIDENTIFICACION"), rs.getString("PACNOMBRES"), rs.getString("PACAPELLIDOS"), rs.getString("PACFECHANACIMIENTO"), rs.getString("PACGENERO"))
+                // ,rs.getString("PACGENERO") esto se puede agregar a la linea 65
+                );
+            }
+            st.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
